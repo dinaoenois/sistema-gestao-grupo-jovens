@@ -56,3 +56,38 @@ class GestaoTests(TestCase):
         self.client.force_login(self.usuario)
         self.assertContains(self.client.get(reverse('gestao:eventos')), 'Nenhum evento cadastrado')
         self.assertContains(self.client.get(reverse('gestao:pagamentos')), 'Nenhum pagamento registrado')
+
+    def test_lista_tarefas_prioriza_prazos_e_limita_cinco(self):
+        sem_prazo = Tarefa.objects.create(titulo='Sem prazo')
+        proxima = Tarefa.objects.create(
+            titulo='Prazo mais próximo', prazo=date(2026, 10, 4)
+        )
+        posterior = Tarefa.objects.create(
+            titulo='Prazo posterior', prazo=date(2026, 10, 10)
+        )
+        Tarefa.objects.create(
+            titulo='Já concluída',
+            prazo=date(2026, 10, 1),
+            concluida=True,
+        )
+        self.client.force_login(self.usuario)
+
+        resposta = self.client.get(reverse('gestao:inicio'))
+        self.assertEqual(
+            list(resposta.context['lista_tarefas']),
+            [proxima, posterior, sem_prazo],
+        )
+
+        for dia in (5, 6, 7, 8):
+            Tarefa.objects.create(
+                titulo=f'Tarefa do dia {dia}',
+                prazo=date(2026, 10, dia),
+            )
+
+        resposta = self.client.get(reverse('gestao:inicio'))
+        tarefas = list(resposta.context['lista_tarefas'])
+        self.assertEqual(len(tarefas), 5)
+        self.assertEqual(
+            [tarefa.prazo for tarefa in tarefas],
+            [date(2026, 10, dia) for dia in (4, 5, 6, 7, 8)],
+        )
