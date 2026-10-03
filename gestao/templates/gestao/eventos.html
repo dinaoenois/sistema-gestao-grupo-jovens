@@ -1,0 +1,15 @@
+{% extends 'gestao/base.html' %}
+{% block titulo %}Eventos | Gestão do Grupo de Jovens{% endblock %}
+{% block conteudo %}
+<h2>Eventos</h2>
+<p><a class="botao" href="{% url 'admin:gestao_evento_add' %}">Cadastrar evento</a></p>
+{% for evento in eventos %}
+<article>
+  <h3>{{ evento.titulo }}</h3>
+  <p><strong>Quando:</strong> {{ evento.data|date:'d/m/Y H:i' }} • <strong>Local:</strong> {{ evento.local }}</p>
+  {{ evento.descricao|linebreaks }}
+  <p><strong>Participantes:</strong> {{ evento.participantes.count }}</p>
+  <a href="{% url 'admin:gestao_evento_change' evento.pk %}">Editar evento e participantes</a>
+</article>
+{% empty %}<p>Nenhum evento cadastrado. Cadastre o primeiro encontro na administração.</p>{% endfor %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'gestao/base.html' %}
+{% block titulo %}Pagamentos | Gestão do Grupo de Jovens{% endblock %}
+{% block conteudo %}
+<h2>Pagamentos</h2>
+<p>Recebido: <strong>R$ {{ totais.pago|floatformat:2 }}</strong> • Pendente: <strong>R$ {{ totais.pendente|floatformat:2 }}</strong></p>
+<p><a class="botao" href="{% url 'admin:gestao_pagamento_add' %}">Registrar pagamento</a></p>
+<div class="tabela"><table>
+<caption>Contribuições por participante e evento</caption>
+<thead><tr><th scope="col">Participante</th><th scope="col">Evento</th><th scope="col">Valor</th><th scope="col">Vencimento</th><th scope="col">Status</th><th scope="col">Ação</th></tr></thead>
+<tbody>{% for pagamento in pagamentos %}
+<tr><td>{{ pagamento.participante }}</td><td>{{ pagamento.evento }}</td><td>R$ {{ pagamento.valor|floatformat:2 }}</td><td>{{ pagamento.vencimento|date:'d/m/Y' }}</td><td>{{ pagamento.get_status_display }}</td><td><a href="{% url 'admin:gestao_pagamento_change' pagamento.pk %}">Editar<span class="sr-only"> pagamento de {{ pagamento.participante }}</span></a></td></tr>
+{% empty %}<tr><td colspan="6">Nenhum pagamento registrado.</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

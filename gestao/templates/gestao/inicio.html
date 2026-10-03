@@ -1,0 +1,12 @@
+{% extends 'gestao/base.html' %}
+{% block conteudo %}
+<h2>Menu principal</h2>
+<p>Organize participantes, encontros, contribuições e responsabilidades do grupo.</p>
+<div class="cards">
+  <section><h3>Participantes ativos</h3><p class="numero">{{ participantes }}</p><a href="{% url 'admin:gestao_participante_changelist' %}">Gerenciar participantes</a></section>
+  <section><h3>Eventos cadastrados</h3><p class="numero">{{ eventos }}</p><a href="{% url 'gestao:eventos' %}">Consultar eventos</a></section>
+  <section><h3>Pagamentos pendentes</h3><p class="numero">{{ pagamentos_pendentes }}</p><a href="{% url 'gestao:pagamentos' %}">Consultar pagamentos</a></section>
+  <section><h3>Tarefas pendentes</h3><p class="numero">{{ tarefas_pendentes }}</p><a href="{% url 'admin:gestao_tarefa_changelist' %}">Gerenciar tarefas</a></section>
+</div>
+<p>Use a administração para cadastrar, editar ou excluir registros e marcar tarefas concluídas.</p>
+{% endblock %}

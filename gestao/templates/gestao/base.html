@@ -1,0 +1,23 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Gestão do Grupo de Jovens{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'gestao/style.css' %}">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header><h1>Gestão do Grupo de Jovens</h1>
+    <nav aria-label="Menu principal">
+      <a href="{% url 'gestao:inicio' %}">Início</a>
+      <a href="{% url 'gestao:eventos' %}">Eventos</a>
+      <a href="{% url 'gestao:pagamentos' %}">Pagamentos</a>
+      <a href="{% url 'admin:index' %}">Administração</a>
+    </nav>
+  </header>
+  <main id="conteudo">{% block conteudo %}{% endblock %}</main>
+  <footer>MVP acadêmico • Organização e participação</footer>
+</body>
+</html>
