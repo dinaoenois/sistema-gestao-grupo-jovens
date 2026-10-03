@@ -3,6 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
 from django.shortcuts import render
 from .models import Evento, Pagamento, Participante, Tarefa
+from django.db import models
 
 @staff_member_required
 def inicio(request):
@@ -11,7 +12,11 @@ def inicio(request):
         'eventos': Evento.objects.count(),
         'pagamentos_pendentes': Pagamento.objects.filter(status=Pagamento.Status.PENDENTE).count(),
         'tarefas_pendentes': Tarefa.objects.filter(concluida=False).count(),
-        'lista_tarefas': Tarefa.objects.filter(concluida=False).select_related('responsavel', 'evento')[:5],
+        'lista_tarefas': (
+            Tarefa.objects.filter(concluida=False)
+            .select_related('responsavel', 'evento')
+            .order_by(models.F('prazo').asc(nulls_last=True), 'pk')[:5]
+        ),
     })
 
 @staff_member_required
