@@ -1,0 +1,41 @@
+name: CI - Testes Django
+
+on:
+  push:
+    branches: [main, melhoria-lista-tarefas]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-e-testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install coverage
+
+      - name: Verificar projeto e preparar banco
+        run: |
+          python manage.py check
+          python manage.py makemigrations --check --dry-run
+          python manage.py migrate --noinput
+
+      - name: Executar testes e medir cobertura
+        run: |
+          python -m coverage run --source=gestao manage.py test gestao --verbosity=2
+          python -m coverage report -m
