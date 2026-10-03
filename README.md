@@ -94,3 +94,13 @@ Crie um repositório público chamado **sistema-gestao-grupo-jovens** e envie os
 O MVP usa o administrador do Django para operações de cadastro e não possui portal dos participantes, notificações, integração de cobrança ou relatórios avançados. Próximas melhorias previstas são formulários próprios, perfis de acesso e validação com usuários do grupo.
 
 Documentação de referência: [Django 5.2](https://docs.djangoproject.com/en/5.2/).
+
+## Roteiro para demonstração do MVP
+
+1. Acesse o painel administrativo com o superusuário criado na instalação.
+2. Cadastre dois participantes fictícios.
+3. Crie um evento e vincule os participantes.
+4. Registre um pagamento pago e outro pendente.
+5. Cadastre uma tarefa com responsável e prazo.
+6. Consulte o menu principal, os eventos e os totais de pagamentos.
+7. Marque a tarefa como concluída e confira a atualização do indicador.
