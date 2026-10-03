@@ -9,4 +9,15 @@
   <section><h3>Tarefas pendentes</h3><p class="numero">{{ tarefas_pendentes }}</p><a href="{% url 'admin:gestao_tarefa_changelist' %}">Gerenciar tarefas</a></section>
 </div>
 <p>Use a administração para cadastrar, editar ou excluir registros e marcar tarefas concluídas.</p>
+<h2>Tarefas pendentes</h2>
+{% for tarefa in lista_tarefas %}
+<article>
+  <h3>{{ tarefa.titulo }}</h3>
+  <p>Responsável: {{ tarefa.responsavel|default:"Não definido" }}</p>
+  <p>Prazo: {{ tarefa.prazo|date:"d/m/Y"|default:"Não definido" }}</p>
+  <a href="{% url 'admin:gestao_tarefa_change' tarefa.pk %}">Editar tarefa</a>
+</article>
+{% empty %}
+<p>Nenhuma tarefa pendente.</p>
+{% endfor %}
 {% endblock %}
