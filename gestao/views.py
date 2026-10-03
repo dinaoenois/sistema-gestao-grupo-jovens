@@ -11,6 +11,7 @@ def inicio(request):
         'eventos': Evento.objects.count(),
         'pagamentos_pendentes': Pagamento.objects.filter(status=Pagamento.Status.PENDENTE).count(),
         'tarefas_pendentes': Tarefa.objects.filter(concluida=False).count(),
+        'lista_tarefas': Tarefa.objects.filter(concluida=False).select_related('responsavel', 'evento')[:5],
     })
 
 @staff_member_required
